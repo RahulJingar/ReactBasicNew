@@ -1,0 +1,413 @@
+import React, { useEffect, useState } from "react";
+
+const App = () => {
+  const [country, setCountry] = useState("");
+  const [statess, setState] = useState("");
+  const [cities, setCities] = useState("");
+  const [place, setPlace] = useState("");
+
+  const data = {
+    india: {
+      states: {
+        Maharashtra: {
+          mumbai: [
+            "Gateway of India",
+            "Marine Drive",
+            "Chhatrapati Shivaji Maharaj Terminus",
+          ],
+          pune: [
+            "historical sites like Shaniwar Wada and Aga Khan Palace",
+            "religious sites such as the Dagdusheth Halwai Ganpati Temple",
+            "Pataleshwar Cave Temple",
+            "cultural attractions like the Rajiv Gandhi Zoological Park",
+          ],
+          nagpur: [
+            " being the orange city known for its high-quality oranges",
+            "being a major center for orange cultivation and processing.",
+          ],
+        },
+
+        Karnataka: {
+          Bengaluru: [
+            "Bangalore Palace",
+            "Lalbagh Botanical Garden",
+            "Cubbon Park",
+            "Vidhana Soudha",
+          ],
+          Mysuru: [
+            "Mysore Palace",
+            "Chamundi Hill",
+            "Brindavan Gardens",
+            "St. Philomena's Church",
+          ],
+          Mangalore: [
+            "Panambur Beach",
+            "Kadri Manjunath Temple",
+            "St. Aloysius Chapel",
+            "Sultan Battery",
+          ],
+        },
+
+        TamilNadu: {
+          Chennai: [
+            "Marina Beach",
+            "Kapaleeshwarar Temple",
+            "Fort St. George",
+            "Santhome Cathedral",
+          ],
+          Coimbatore: [
+            "Marudamalai Temple",
+            "VOC Park & Zoo",
+            "Perur Patteeswarar Temple",
+            "Isha Yoga Center",
+          ],
+          Madurai: [
+            "Meenakshi Amman Temple",
+            "Thirumalai Nayakkar Palace",
+            "Gandhi Memorial Museum",
+            "Alagar Kovil",
+          ],
+        },
+
+        Gujarat: {
+          Ahmedabad: [
+            "Sabarmati Ashram",
+            "Akshardham Temple",
+            "Kankaria Lake",
+            "Sidi Saiyyed Mosque",
+          ],
+          Surat: [
+            "Dumas Beach",
+            "Sarthana Nature Park",
+            "Dutch Garden",
+            "Surat Castle",
+          ],
+          Vadodara: [
+            "Laxmi Vilas Palace",
+            "Sayaji Baug (Kamati Baug)",
+            "Baroda Museum & Picture Gallery",
+            "Kirti Mandir",
+          ],
+        },
+
+        Rajasthan: {
+          Jaipur: ["Hawa Mahal", "Amber Fort", "City Palace", "Jal Mahal"],
+          Udaipur: [
+            "City Palace",
+            "Lake Pichola",
+            "Jagdish Temple",
+            "Saheliyon ki Bari",
+          ],
+          Jodhpur: [
+            "Mehrangarh Fort",
+            "Umaid Bhawan Palace",
+            "Jaswant Thada",
+            "Mandore Gardens",
+          ],
+        },
+
+        WestBengal: {
+          Kolkata: [
+            "Victoria Memorial",
+            "Howrah Bridge",
+            "Indian Museum",
+            "Dakshineswar Kali Temple",
+          ],
+          Siliguri: [
+            "Coronation Bridge",
+            "Mahananda Wildlife Sanctuary",
+            "Salugara Monastery",
+            "North Bengal Science Centre",
+          ],
+          Durgapur: [
+            "Durgapur Barrage",
+            "Bhabani Pathak's Temple",
+            "Anand Amusement Park",
+            "City Centre Mall",
+          ],
+        },
+
+        Punjab: {
+          Chandigarh: [
+            "Rock Garden",
+            "Sukhna Lake",
+            "Rose Garden",
+            "Pinjore Gardens",
+          ],
+          Amritsar: [
+            "Golden Temple",
+            "Jallianwala Bagh",
+            "Wagah Border",
+            "Partition Museum",
+          ],
+          Ludhiana: [
+            "Punjab Agricultural University Museum",
+            "Rakh Bagh Park",
+            "Nehru Rose Garden",
+            "Hardy's World",
+          ],
+        },
+
+        Haryana: {
+          Gurugram: [
+            "Kingdom of Dreams",
+            "CyberHub",
+            "Ambience Mall",
+            "Leisure Valley Park",
+          ],
+          Faridabad: [
+            "Surajkund Mela",
+            "Badkhal Lake",
+            "Rose Garden",
+            "Town Park",
+          ],
+          Panipat: [
+            "Panipat Museum",
+            "Kabuli Bagh Mosque",
+            "Panipat Battle Field",
+            "Devi Temple",
+          ],
+        },
+
+        Telangana: {
+          Hyderabad: [
+            "Charminar",
+            "Golconda Fort",
+            "Ramoji Film City",
+            "Hussain Sagar Lake",
+          ],
+          Warangal: [
+            "Warangal Fort",
+            "Ramappa Temple",
+            "Bhadrakali Temple",
+            "Pakhal Lake",
+          ],
+          Nizamabad: [
+            "Nizamabad Fort",
+            "Pocharam Wildlife Sanctuary",
+            "Nallagutta Temple",
+            "Alisagar Reservoir",
+          ],
+        },
+
+        UttarPradesh: {
+          Lucknow: [
+            "Bara Imambara",
+            "Chota Imambara",
+            "Rumi Darwaza",
+            "Hazratganj Market",
+          ],
+          Kanpur: [
+            "Kanpur Memorial Church",
+            "Allen Forest Zoo",
+            "Jhakarkatti Bus Stand",
+            "Moti Jheel",
+          ],
+          Agra: ["Taj Mahal", "Agra Fort", "Fatehpur Sikri", "Mehtab Bagh"],
+        },
+
+        Bihar: {
+          Patna: ["Golghar", "Patna Museum", "Gandhi Maidan", "Mahavir Mandir"],
+          Gaya: [
+            "Mahabodhi Temple",
+            "Vishnupad Temple",
+            "Dungeshwari Cave Temples",
+            "Barabar Caves",
+          ],
+          Bhagalpur: [
+            "Vikramshila Ruins",
+            "Kuppaghat",
+            "Bhagalpur Museum",
+            "Mandar Hill",
+          ],
+        },
+
+        Odisha: {
+          Bhubaneswar: [
+            "Lingaraj Temple",
+            "Udayagiri and Khandagiri Caves",
+            "Nandankanan Zoological Park",
+            "Rajarani Temple",
+          ],
+          Cuttack: [
+            "Barabati Fort",
+            "Netaji Birthplace Museum",
+            "Mangal Talab",
+            "Cuttack Chandi Temple",
+          ],
+          Rourkela: [
+            "Hanuman Vatika",
+            "Rourkela Steel Plant",
+            "Indira Gandhi Park",
+            "Jagannath Temple",
+          ],
+        },
+      },
+    },
+    usa: {
+      states: {
+        California: {
+          LosAngeles: [
+            "Hollywood Sign",
+            "Griffith Observatory",
+            "Santa Monica Pier",
+            "Universal Studios Hollywood",
+          ],
+          SanFrancisco: [
+            "Golden Gate Bridge",
+            "Alcatraz Island",
+            "Fisherman's Wharf",
+            "Chinatown",
+          ],
+          SanDiego: [
+            "San Diego Zoo",
+            "Balboa Park",
+            "La Jolla Cove",
+            "USS Midway Museum",
+          ],
+        },
+
+        NewYork: {
+          NewYork: [
+            "Statue of Liberty",
+            "Central Park",
+            "Times Square",
+            "Empire State Building",
+          ],
+          Buffalo: [
+            "Niagara Falls",
+            "Buffalo Zoo",
+            "Albright-Knox Art Gallery",
+            "Canalside",
+          ],
+          Rochester: [
+            "George Eastman Museum",
+            "Highland Park",
+            "Strong National Museum of Play",
+            "Rochester Museum & Science Center",
+          ],
+        },
+      },
+    },
+    germany: {
+      states: {
+        Bavaria: {
+          Munich: [
+            "Marienplatz",
+            "Nymphenburg Palace",
+            "English Garden",
+            "BMW Museum",
+          ],
+          Nuremberg: [
+            "Nuremberg Castle",
+            "Documentation Center Nazi Party Rally Grounds",
+            "Albrecht Dürer's House",
+            "St. Lorenz Church",
+          ],
+          Augsburg: [
+            "Augsburg Town Hall",
+            "Fuggerei",
+            "Augsburg Cathedral",
+            "St. Anne's Church",
+          ],
+        },
+
+        Berlin: {
+          Berlin: [
+            "Brandenburg Gate",
+            "Berlin Wall Memorial",
+            "Museum Island",
+            "Reichstag Building",
+          ],
+          Potsdam: [
+            "Sanssouci Palace",
+            "Potsdam Gardens",
+            "Cecilienhof Palace",
+            "Babelsberg Film Studio",
+          ],
+          Cottbus: [
+            "Branitz Park",
+            "Cottbus Zoo",
+            "Staatstheater Cottbus",
+            "Spremberger Turm",
+          ],
+        },
+      },
+    },
+  };
+
+  const countries = Object.keys(data);
+  console.log(`>>countries>>`, countries);
+
+  let state = [];
+  let city = [];
+  let placesList = [];
+
+  if (country) {
+    state = Object.keys(data[country].states);
+    console.log(`>>state>>`, state);
+  }
+
+  if (country && statess && data[country].states[statess]) {
+    city = Object.keys(data[country].states[statess]);
+  }
+
+  const countryHandle = (e) => {
+    setCountry(e.target.value);
+  };
+
+  const stateHandle = (e) => {
+    setState(e.target.value);
+  };
+
+  const cityHandle = (e) => {
+    setCities(e.target.value);
+  };
+
+  useEffect(() => {
+    if (country && statess && cities) {
+      setPlace(data[country].states[statess][cities]);
+    }
+  }, [country, statess, cities]);
+
+  return (
+    <div>
+      <h5>Select Country</h5>
+      <select value={country} onChange={countryHandle}>
+        <option>select</option>
+        {countries.map((ct) => (
+          <option>{ct}</option>
+        ))}
+      </select>
+
+      <p>
+        Your Country is: <span>{country}</span>
+      </p>
+
+      <h5>Select State</h5>
+      <select value={statess} onChange={stateHandle}>
+        <option>select</option>
+        {state.map((ct) => (
+          <option>{ct}</option>
+        ))}
+      </select>
+      <p>
+        Your State is: <span>{statess}</span>
+      </p>
+
+      <h5>Select City</h5>
+      <select value={cities} onChange={cityHandle}>
+        <option>select</option>
+        {city && city.map((ct) => <option>{ct}</option>)}
+      </select>
+      <p>
+        Your City is: <span>{cities}</span>
+      </p>
+      <p>
+        favrouite places: <span> {place}</span>
+      </p>
+    </div>
+  );
+};
+
+export default App;
